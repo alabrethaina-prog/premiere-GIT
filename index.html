@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hello, World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ece8fb;
+    --ink: #241a4b;
+    --blue: #3d4bff;
+    --sun: #ffc94d;
+    --pink: #ff8fb8;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    position: relative;
+  }
+  /* soft drifting shapes behind the greeting */
+  .shape { position: absolute; border-radius: 50%; filter: blur(2px); }
+  .s1 { width: 38vmax; height: 38vmax; background: var(--sun); top: -12vmax; right: -8vmax; }
+  .s2 { width: 30vmax; height: 30vmax; background: var(--pink); bottom: -14vmax; left: -6vmax; }
+  .s3 { width: 14vmax; height: 14vmax; background: var(--blue); bottom: 12vh; right: 14vw; }
+  main { position: relative; text-align: center; padding: 2rem; }
+  .greeting {
+    font-size: clamp(3.5rem, 15vw, 11rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    min-height: 1.1em;
+    color: var(--ink);
+  }
+  .greeting span {
+    display: inline-block;
+    animation: rise .7s cubic-bezier(.2,.8,.2,1) both;
+  }
+  .world {
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    font-weight: 300;
+    margin-top: 1rem;
+  }
+  .lang {
+    margin-top: 2rem;
+    display: inline-block;
+    padding: .45rem 1.1rem;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--bg);
+    font-size: 1rem;
+    min-width: 8rem;
+  }
+  @keyframes rise {
+    from { transform: translateY(60%) rotate(4deg); opacity: 0; }
+    to   { transform: none; opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .greeting span { animation: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="shape s1" aria-hidden="true"></div>
+  <div class="shape s2" aria-hidden="true"></div>
+  <div class="shape s3" aria-hidden="true"></div>
+
+  <main>
+    <h1 class="greeting" id="greeting" aria-live="polite">Hello</h1>
+    <p class="world">world.</p>
+    <p class="lang" id="lang">English</p>
+  </main>
+
+<script>
+  const hellos = [
+    ["Hello", "English"], ["Bonjou", "Kreyòl ayisyen"], ["Bonjour", "Français"],
+    ["Hola", "Español"], ["こんにちは", "日本語"], ["Ciao", "Italiano"],
+    ["Olá", "Português"], ["Hallo", "Deutsch"], ["مرحبا", "العربية"], ["Habari", "Kiswahili"]
+  ];
+  const g = document.getElementById("greeting");
+  const l = document.getElementById("lang");
+  let i = 0;
+  function show(n) {
+    const [word, name] = hellos[n];
+    g.innerHTML = [...word].map((c, k) =>
+      `<span style="animation-delay:${k * 40}ms">${c}</span>`).join("");
+    l.textContent = name;
+  }
+  show(0);
+  setInterval(() => { i = (i + 1) % hellos.length; show(i); }, 2200);
+</script>
+</body>
+</html>
